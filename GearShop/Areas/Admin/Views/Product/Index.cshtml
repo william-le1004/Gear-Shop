@@ -1,0 +1,38 @@
+﻿@model List<Product>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row py-3">
+
+            <div class="col-6">
+
+                <h5 class="card-title">Product List</h5>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Product" asp-action="CreateAndUpdate" class="btn btn-dark rounded-pill"
+                    style="margin-top:15px">
+                    <i class="bi bi-plus-circle"></i>  Create New Product
+                </a>
+            </div>
+
+        </div>
+
+        <table id="tblData" class="table" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Product Image</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Category</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/product.js"></script>
+}

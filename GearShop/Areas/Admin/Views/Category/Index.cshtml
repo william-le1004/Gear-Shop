@@ -1,0 +1,39 @@
+﻿@model List<Category>
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="row py-3">
+
+            <div class="col-6">
+
+                <h5 class="card-title">Category List</h5>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Category" asp-action="CreateAndUpdate" 
+                    class="btn btn-dark rounded-pill"
+                    style="margin-top:15px">
+                    <i class="bi bi-plus-circle"></i>  Create New Category
+                </a>
+            </div>
+
+        </div>
+
+        <table id="tblData" class="table table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th class="w-10"></th>
+                   
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/category.js"></script>
+}
+
+
