@@ -37,29 +37,28 @@
                             <span asp-validation-for="product.Stock" class="text-danger"></span>
                         </div>
                         <div class="form-group py-4 ">
-                            <label asp-for="product.Description">Category:</label>
+                            <label asp-for="product.Category">Category:</label>
                             <select asp-for="@Model.product.CategoryId" asp-items="@Model.CategoryList">
                                 <option disabled selected>--Select Category--</option>
                             </select>
                             <span asp-validation-for="product.CategoryId" class="text-danger"></span>
-                        
+
                         </div>
+
                         <div class="d-flex justify-content-center">
-                             
-                            <div class="form-group py-2 col-6 mx-auto">
-                        
-                            <label asp-for="product.ImgUrl" class="">Product Image:</label>
-                            <input type="file" name="file" class="form-control border-3" autocomplete="off">
 
-                        </div>
                             <div class="form-group py-2 col-6 mx-auto">
 
-                                <img src="@Model.product.ImgUrl" width="50%"
-                                     style="border-radius:5px; border:1px solid #bbb9b9" />
+                                <label asp-for="product.ImgUrl" class="">Product Image:</label>
+                                <input type="file" name="file" accept="image/x-png,image/gif,image/jpeg,image/webp" class="form-control border-3" autocomplete="off">
 
                             </div>
-
+                            <div class="form-group py-2 col-6 mx-auto d-flex">
+                                <img src="@Model.product.ImgUrl" width="50%"
+                                     style="border-radius:5px; border:1px solid #bbb9b9" class="m-auto" />
+                            </div>
                         </div>
+
                         <div class="d-flex justify-content-center">
                             <div class="col-6 col-md-3 py-5 mx-auto">
                                 @if (Model.product.Id != 0)

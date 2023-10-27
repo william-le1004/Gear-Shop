@@ -1,7 +1,9 @@
 using AspNetCoreHero.ToastNotification;
-using DataAccess.Data;
 using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
+using GearShopWeb.Areas.Common;
+using Infrastructure.Interface;
+using Infrastructure.Interface.IRepository;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +15,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                  builder.Configuration.
                  GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 
 builder.Services.AddNotyf(config =>
@@ -35,6 +50,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

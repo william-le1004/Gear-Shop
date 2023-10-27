@@ -1,6 +1,6 @@
-﻿using DataAccess.Data;
-using DataAccess.Repository.IRepository;
-using Models;
+﻿using Domain.Entities;
+using Infrastructure.Interface.IRepository;
+using Infrastructure.Persistence;
 
 namespace DataAccess.Repository
 {

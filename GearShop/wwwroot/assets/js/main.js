@@ -1,321 +1,231 @@
-/**
-* Template Name: NiceAdmin
-* Updated: Sep 18 2023 with Bootstrap v5.3.2
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-(function() {
-  "use strict";
-
-  /**
-   * Easy selector helper function
-   */
-  const select = (el, all = false) => {
-    el = el.trim()
-    if (all) {
-      return [...document.querySelectorAll(el)]
-    } else {
-      return document.querySelector(el)
+(function ($) {
+    "use strict";
+    
+    new WOW().init();  
+    
+    
+    /*---background image---*/
+	function dataBackgroundImage() {
+		$('[data-bgimg]').each(function () {
+			var bgImgUrl = $(this).data('bgimg');
+			$(this).css({
+				'background-image': 'url(' + bgImgUrl + ')', // + meaning concat
+			});
+		});
     }
-  }
-
-  /**
-   * Easy event listener function
-   */
-  const on = (type, el, listener, all = false) => {
-    if (all) {
-      select(el, all).forEach(e => e.addEventListener(type, listener))
-    } else {
-      select(el, all).addEventListener(type, listener)
-    }
-  }
-
-  /**
-   * Easy on scroll event listener 
-   */
-  const onscroll = (el, listener) => {
-    el.addEventListener('scroll', listener)
-  }
-
-  /**
-   * Sidebar toggle
-   */
-  if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
-    })
-  }
-
-  /**
-   * Search bar toggle
-   */
-  if (select('.search-bar-toggle')) {
-    on('click', '.search-bar-toggle', function(e) {
-      select('.search-bar').classList.toggle('search-bar-show')
-    })
-  }
-
-  /**
-   * Navbar links active state on scroll
-   */
-  let navbarlinks = select('#navbar .scrollto', true)
-  const navbarlinksActive = () => {
-    let position = window.scrollY + 200
-    navbarlinks.forEach(navbarlink => {
-      if (!navbarlink.hash) return
-      let section = select(navbarlink.hash)
-      if (!section) return
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        navbarlink.classList.add('active')
-      } else {
-        navbarlink.classList.remove('active')
-      }
-    })
-  }
-  window.addEventListener('load', navbarlinksActive)
-  onscroll(document, navbarlinksActive)
-
-  /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
-  let selectHeader = select('#header')
-  if (selectHeader) {
-    const headerScrolled = () => {
-      if (window.scrollY > 100) {
-        selectHeader.classList.add('header-scrolled')
-      } else {
-        selectHeader.classList.remove('header-scrolled')
-      }
-    }
-    window.addEventListener('load', headerScrolled)
-    onscroll(document, headerScrolled)
-  }
-
-  /**
-   * Back to top button
-   */
-  let backtotop = select('.back-to-top')
-  if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add('active')
-      } else {
-        backtotop.classList.remove('active')
-      }
-    }
-    window.addEventListener('load', toggleBacktotop)
-    onscroll(document, toggleBacktotop)
-  }
-
-  /**
-   * Initiate tooltips
-   */
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-
-  /**
-   * Initiate quill editors
-   */
-  if (select('.quill-editor-default')) {
-    new Quill('.quill-editor-default', {
-      theme: 'snow'
+    
+    
+    $(window).on('load', function () {
+        dataBackgroundImage();
     });
-  }
 
-  if (select('.quill-editor-bubble')) {
-    new Quill('.quill-editor-bubble', {
-      theme: 'bubble'
+    /*swiper container activation*/
+    var swiper = new Swiper('.slider_swiper', {
+        clickable: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
+
+
+    // Slick Slider Activation
+    var $sliderActvation = $('.slick_slider_activation');
+    if($sliderActvation.length > 0){
+        $sliderActvation.slick({
+          prevArrow:'<button class="prev_arrow"><i class="ion-ios-arrow-left"></i></button>',
+          nextArrow:'<button class="next_arrow"><i class="ion-ios-arrow-right"></i></button>',
+        });
+    };
+    
+
+    /*swiper container activation*/
+    var swiper = new Swiper('.testimonial_swiper', {
+        slidesPerView: 2,
+        spaceBetween: 90,
+        breakpoints: {
+            1200: {
+                spaceBetween: 90,
+                
+            },
+            992: {
+                spaceBetween: 30,
+                
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+              
+            },
+            320: {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                
+            },
+        },
+        pagination: {
+            clickable: true,
+            el: '.swiper-pagination',
+        },
     });
-  }
 
-  if (select('.quill-editor-full')) {
-    new Quill(".quill-editor-full", {
-      modules: {
-        toolbar: [
-          [{
-            font: []
-          }, {
-            size: []
-          }],
-          ["bold", "italic", "underline", "strike"],
-          [{
-              color: []
-            },
-            {
-              background: []
-            }
-          ],
-          [{
-              script: "super"
-            },
-            {
-              script: "sub"
-            }
-          ],
-          [{
-              list: "ordered"
-            },
-            {
-              list: "bullet"
-            },
-            {
-              indent: "-1"
-            },
-            {
-              indent: "+1"
-            }
-          ],
-          ["direction", {
-            align: []
-          }],
-          ["link", "image", "video"],
-          ["clean"]
-        ]
-      },
-      theme: "snow"
+
+    //Shopping Cart addClass removeClass
+    $('.shopping_cart > a').on('click', function(){
+        $('.mini_cart,.body_overlay').addClass('active')
     });
-  }
+    $('.mini_cart_close a,.body_overlay').on('click', function(){
+        $('.mini_cart,.body_overlay').removeClass('active')
+    });
 
-  /**
-   * Initiate TinyMCE Editor
-   */
-  const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
+   //Search Box addClass removeClass
+   $('.header_search_btn > a').on('click', function(){
+    $('.page_search_box').addClass('active')
+    });
+    $('.search_close > i').on('click', function(){
+        $('.page_search_box').removeClass('active')
+    });
 
-  tinymce.init({
-    selector: 'textarea.tinymce-editor',
-    plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-    editimage_cors_hosts: ['picsum.photos'],
-    menubar: 'file edit view insert format tools table help',
-    toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    toolbar_sticky: true,
-    toolbar_sticky_offset: isSmallScreen ? 102 : 108,
-    autosave_ask_before_unload: true,
-    autosave_interval: '30s',
-    autosave_prefix: '{path}{query}-{id}-',
-    autosave_restore_when_empty: false,
-    autosave_retention: '2m',
-    image_advtab: true,
-    link_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
-    ],
-    image_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
-    ],
-    image_class_list: [{
-        title: 'None',
-        value: ''
-      },
-      {
-        title: 'Some class',
-        value: 'class-name'
-      }
-    ],
-    importcss_append: true,
-    file_picker_callback: (callback, value, meta) => {
-      /* Provide file and text for the link dialog */
-      if (meta.filetype === 'file') {
-        callback('https://www.google.com/logos/google.jpg', {
-          text: 'My text'
-        });
-      }
 
-      /* Provide image and alt text for the image dialog */
-      if (meta.filetype === 'image') {
-        callback('https://www.google.com/logos/google.jpg', {
-          alt: 'My alt text'
-        });
-      }
 
-      /* Provide alternative source and posted for the media dialog */
-      if (meta.filetype === 'media') {
-        callback('movie.mp4', {
-          source2: 'alt.ogg',
-          poster: 'https://www.google.com/logos/google.jpg'
-        });
-      }
-    },
-    templates: [{
-        title: 'New Table',
-        description: 'creates a new table',
-        content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'
-      },
-      {
-        title: 'Starting my story',
-        description: 'A cure for writers block',
-        content: 'Once upon a time...'
-      },
-      {
-        title: 'New list with dates',
-        description: 'New List with dates',
-        content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>'
-      }
-    ],
-    template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
-    template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-    height: 600,
-    image_caption: true,
-    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-    noneditable_class: 'mceNonEditable',
-    toolbar_mode: 'sliding',
-    contextmenu: 'link image table',
-    skin: useDarkMode ? 'oxide-dark' : 'oxide',
-    content_css: useDarkMode ? 'dark' : 'default',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-  });
 
-  /**
-   * Initiate Bootstrap validation check
-   */
-  var needsValidation = document.querySelectorAll('.needs-validation')
-
-  Array.prototype.slice.call(needsValidation)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+    /*--- Magnific Popup Video---*/
+    $('.video_popup').magnificPopup({
+        type: 'iframe',
+        gallery: {
+            enabled: true
         }
+    });
 
-        form.classList.add('was-validated')
-      }, false)
-    })
+    $('.img_popup').magnificPopup({
+        type: 'image',
+        gallery: {
+            enabled: true
+        }
+    });
 
-  /**
-   * Initiate Datatables
-   */
-  const datatables = select('.datatable', true)
-  datatables.forEach(datatable => {
-    new simpleDatatables.DataTable(datatable);
-  })
 
-  /**
-   * Autoresize echart charts
-   */
-  const mainContainer = select('#main');
-  if (mainContainer) {
-    setTimeout(() => {
-      new ResizeObserver(function() {
-        select('.echart', true).forEach(getEchart => {
-          echarts.getInstanceByDom(getEchart).resize();
-        })
-      }).observe(mainContainer);
-    }, 200);
-  }
+    /*--- counterup activation ---*/
+    $('.counterup').counterUp({
+        delay: 20,
+        time: 1000
+    });
+    
+    
+    $('.select_option').niceSelect();
+ 
+    
+      /*---  ScrollUp Active ---*/
+      $.scrollUp({
+        scrollText: '<i class="ion-android-arrow-up"></i>',
+        easingType: 'linear',
+        scrollSpeed: 900,
+        animation: 'fade'
+    });
+    
 
-})();
+    $('#nav-tab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+    
+
+    /*---canvas menu activation---*/
+    $('.canvas_open').on('click', function(){
+        $('.offcanvas_menu_wrapper,.body_overlay').addClass('active')
+    });
+    
+    $('.canvas_close,.body_overlay').on('click', function(){
+        $('.offcanvas_menu_wrapper,.body_overlay').removeClass('active')
+    });
+    /*---Off Canvas Menu---*/
+    var $offcanvasNav = $('.offcanvas_main_menu'),
+        $offcanvasNavSubMenu = $offcanvasNav.find('.sub-menu');
+    $offcanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i class="fa fa-angle-down"></i></span>');
+    
+    $offcanvasNavSubMenu.slideUp();
+    
+    $offcanvasNav.on('click', 'li a, li .menu-expand', function(e) {
+        var $this = $(this);
+        if ( ($this.parent().attr('class').match(/\b(menu-item-has-children|has-children|has-sub-menu)\b/)) && ($this.attr('href') === '#' || $this.hasClass('menu-expand')) ) {
+            e.preventDefault();
+            if ($this.siblings('ul:visible').length){
+                $this.siblings('ul').slideUp('slow');
+            }else {
+                $this.closest('li').siblings('li').find('ul:visible').slideUp('slow');
+                $this.siblings('ul').slideDown('slow');
+            }
+        }
+        if( $this.is('a') || $this.is('span') || $this.attr('clas').match(/\b(menu-expand)\b/) ){
+        	$this.parent().toggleClass('menu-open');
+        }else if( $this.is('li') && $this.attr('class').match(/\b('menu-item-has-children')\b/) ){
+        	$this.toggleClass('menu-open');
+        }
+    });
+
+   
+   
+    /************************************************
+     * Price Slider
+     ***********************************************/
+    $("#slider-range").slider({
+        range: true,
+        min: 0,
+        max: 500,
+        values: [12, 500],
+        slide: function(event, ui) {
+            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+        }
+    });
+    $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+        " - $" + $("#slider-range").slider("values", 1));
+  
+    
+
+    //Quantity Counter
+    $(".pro-qty").append('<a href="#" class="inc qty-btn">+</a>');
+      $(".pro-qty").prepend('<a href="#" class= "dec qty-btn">-</a>');
+    
+      $(".qty-btn").on("click", function (e) {
+        e.preventDefault();
+        var $button = $(this);
+        var oldValue = $button.parent().find("input").val();
+        if ($button.hasClass("inc")) {
+          var newVal = parseFloat(oldValue) + 1;
+        } else {
+          // Don't allow decrementing below zero
+          if (oldValue > 1) {
+            var newVal = parseFloat(oldValue) - 1;
+          } else {
+            newVal = 1;
+          }
+        }
+        $button.parent().find("input").val(newVal);
+    });
+
+    
+    /*---MailChimp---*/
+    $('#mc-form').ajaxChimp({
+        language: 'en',
+        callback: mailChimpResponse,
+        // ADD YOUR MAILCHIMP URL BELOW HERE!
+        url: 'http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef'
+
+    });
+    function mailChimpResponse(resp) {
+
+        if (resp.result === 'success') {
+            $('.mailchimp-success').addClass('active')
+            $('.mailchimp-success').html('' + resp.msg).fadeIn(900);
+            $('.mailchimp-error').fadeOut(400);
+
+        } else if(resp.result === 'error') {
+            $('.mailchimp-error').html('' + resp.msg).fadeIn(900);
+        }  
+    }
+ 
+
+    
+    
+    
+})(jQuery);	

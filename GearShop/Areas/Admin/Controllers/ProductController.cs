@@ -1,138 +1,138 @@
-﻿using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Application.Common.ExtensionMethods;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using Domain.Entities;
+using GearShopWeb.Areas.Admin.Controllers;
+using Infrastructure.Interface.IRepository;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Models;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 
-namespace GearShop.Areas.Admin.Controllers
+namespace GearShop.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class ProductController : BaseController
 {
-    [Area("Admin")]
-    public class ProductController : Controller
+    #region Readonlys
+
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
+    #endregion
+
+    public INotyfService _notyfService { get; }
+
+    #region Constructor
+
+    public ProductController(IUnitOfWork unitOfWork, 
+        IWebHostEnvironment webHostEnvironment, 
+        INotyfService notyfService,
+        ApplicationDbContext db)
     {
-        #region DI
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
-        {
-            _unitOfWork = unitOfWork;
-            _webHostEnvironment = webHostEnvironment;
-        }
-        #endregion
-        public IActionResult Index()
-        {
-            List<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-            return View(productList);
-        }
-        public IActionResult CreateAndUpdate(int? id)
-        {
-            ProductVM productVM = new()
-            {
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                }),
-                product = new Product()
-            };
-            if (id == null || id == 0)
-            {
-                // create 
-                return View(productVM);
-            }
-            else
-            {
-                //update
-                productVM.product = _unitOfWork.Product.Get(u => u.Id == id);
-                return View(productVM);
-            }
-        }
-        [HttpPost]
-        public IActionResult CreateAndUpdate(ProductVM productVM, IFormFile? file)
-        {
-            if (ModelState.IsValid)
-            {
-                String wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (wwwRootPath != null)
-                {
-                    String fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    String productPath = Path.Combine(wwwRootPath, @"images\product");
-                    if (!string.IsNullOrEmpty(productVM.product.ImgUrl))
-                    {
-                        //Delete old image
-                        //var oldImage = productPath + fileName;
-                        var oldImage = Path.Combine(wwwRootPath, productVM.product.ImgUrl.TrimStart('\\'));
-                        if (System.IO.File.Exists(oldImage))
-                        {
-                            System.IO.File.Delete(oldImage);
-                        }
-                    }
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-                    productVM.product.ImgUrl = @"\images\product\" + fileName;
-                    //productVM.Product.ImgUrl = fileName;
-                }
-
-                if (productVM.product.Id == 0)
-                {
-                    _unitOfWork.Product.Add(productVM.product);
-                }
-                else
-                {
-                    _unitOfWork.Product.Update(productVM.product);
-                }
-
-                _unitOfWork.Save();
-                TempData["success"] = "Product Created Successfully";
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                });
-                return View();
-            }
-        }
-
-        #region API CALL
-        public IActionResult GetAll()
-        {
-            List<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-            return Json(new
-            {
-                data = productList
-            });
-        }
-        [HttpDelete]
-        public IActionResult Delete(int? id)
-        {
-            Product product = _unitOfWork.Product.Get(u => u.Id == id);
-            if (product == null)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = "Error while deleting"
-                });
-            }
-            var oldImage = Path.Combine(_webHostEnvironment.WebRootPath
-                            , product.ImgUrl.TrimStart('\\'));
-            if (System.IO.File.Exists(oldImage))
-            {
-                System.IO.File.Delete(oldImage);
-            }
-
-            _unitOfWork.Product.Remove(product);
-            _unitOfWork.Save();
-            return Json(new { success = true, message = "Product Updated Successfully" });
-        }
-        #endregion
+        _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
+        _notyfService = notyfService;
+        _db = db;
     }
+
+    #endregion
+
+    public async Task<IActionResult> Index(int? pageNumber)
+    {
+        var productList = await _db.Products.Include(x=>x.Category)
+                                            .PaginatedListAsync(pageNumber ?? 1, 4);
+        return View(productList);
+    }
+    public async Task<IActionResult> CreateAndUpdate(int? id)
+    {
+        ProductVM productVM = new()
+        {
+            CategoryList = await _db.Categories.AsNoTracking()
+            .Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }).ToListAsync(),
+            product = new Product()
+        };
+        if (id == null || id == 0)
+        {
+            // create 
+            return View(productVM);
+        }
+        else
+        {
+            //update
+            productVM.product = await _unitOfWork.Product.Get(u => u.Id == id);
+            return View(productVM);
+        }
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreateAndUpdate(ProductVM productVM, IFormFile? file)
+    {
+        if (ModelState.IsValid)
+        {
+            String wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string productPath = Path.Combine(wwwRootPath, @"images\product");
+                if (!string.IsNullOrEmpty(productVM.product.ImgUrl))
+                {
+                    //Delete old image
+                    var oldImage = Path.Combine(wwwRootPath, productVM.product.ImgUrl.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImage))
+                    {
+                        System.IO.File.Delete(oldImage);
+                    }
+                }
+                using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                productVM.product.ImgUrl = @"\images\product\" + fileName;
+                //productVM.Product.ImgUrl = fileName;
+            }
+
+            if (productVM.product.Id == 0)
+            {
+                await _unitOfWork.Product.Add(productVM.product);
+                _notyfService.Success("Product Added Successfully");
+            }
+            else
+            {
+                await _unitOfWork.Product.Update(productVM.product);
+                _notyfService.Success("Product Updated Successfully");
+            }
+
+            await _unitOfWork.Save();
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            productVM.CategoryList = _db.Categories.Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+            return View();
+        }
+    }
+  
+    [HttpDelete]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        Product? product = await _unitOfWork.Product.Get(x => x.Id == id);
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+        await _unitOfWork.Product.Remove(product);
+        await _unitOfWork.Save();
+        _notyfService.Success("Deleted!");
+        return RedirectToAction("Index");
+    }
+   
 }

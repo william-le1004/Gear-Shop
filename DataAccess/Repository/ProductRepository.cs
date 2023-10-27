@@ -1,6 +1,7 @@
-﻿using DataAccess.Data;
-using DataAccess.Repository.IRepository;
-using Models;
+﻿using Domain.Entities;
+using Infrastructure.Interface.IRepository;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repository
 {
@@ -12,9 +13,22 @@ namespace DataAccess.Repository
             _db = db;
         }
 
-        public void Update(Product obj)
+        public async Task Update(Product obj)
         {
-            _db.Products.Update(obj);
+            var product = await _db.Products.FirstOrDefaultAsync(u => u.Id == obj.Id);
+            if (product != null)
+            {
+                product.Name = obj.Name;
+                product.Description = obj.Description;
+                product.Price = obj.Price;
+                product.Stock = obj.Stock;
+                product.CategoryId = obj.CategoryId;
+                if (product.ImgUrl != null)
+                {
+                    product.ImgUrl = obj.ImgUrl;
+                }
+            }
+
         }
     }
 }

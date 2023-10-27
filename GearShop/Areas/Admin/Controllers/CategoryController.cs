@@ -1,92 +1,82 @@
-﻿using DataAccess.Repository.IRepository;
-using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Domain.Entities;
+using Application.Common.ExtensionMethods;
+using GearShopWeb.Areas.Admin.Controllers;
+using Infrastructure.Interface.IRepository;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 
-namespace ShoppingWeb.Areas.Admin.Controllers
+namespace ShoppingWeb.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class CategoryController : BaseController
 {
-    [Area("Admin")]
-    public class CategoryController : Controller
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ApplicationDbContext _db;
+    public INotyfService _notyfService { get; }
+    public CategoryController(IUnitOfWork unitOfWork, INotyfService notyfService, ApplicationDbContext db)
     {
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _notyfService = notyfService;
+        _db = db;
+    }
+    public async Task<IActionResult> Index(int? pageNumber)
+    {
+        var paginatedList = await _db.Categories.PaginatedListAsync(pageNumber ?? 1, 4);
+        return View(paginatedList);
+    }
 
-        public CategoryController(IUnitOfWork unitOfWork)
+    public async Task<IActionResult> CreateAndUpdate(int? id)
+    {
+        if (id == null || id == 0)
         {
-            _unitOfWork = unitOfWork;
+            Category c = new Category();
+            return View(c);
         }
-        public IActionResult Index()
+        else
         {
-            List<Category> categoryList = _unitOfWork.Category.GetAll().ToList();
-            return View(categoryList);
+            Category c = await _unitOfWork.Category.Get(u => u.Id == id);
+            return View(c);
         }
+    }
 
-        public IActionResult CreateAndUpdate(int? id)
+    [HttpPost]
+    public async Task<IActionResult> CreateAndUpdate(Category obj)
+    {
+
+        if (ModelState.IsValid)
         {
-            if (id == null || id == 0)
+            //Create new
+            if (obj.Id == 0)
             {
-                Category c = new Category();
-                return View(c);
+                await _unitOfWork.Category.Add(obj);
+                _notyfService.Success("Category Added Successfully");
             }
             else
             {
-                Category c = _unitOfWork.Category.Get(u => u.Id == id);
-                return View(c);
+                _unitOfWork.Category.Update(obj);
+                _notyfService.Success("Category Updated Successfully");
             }
+            await _unitOfWork.Save();
+
+            return RedirectToAction("Index");
         }
-
-        [HttpPost]
-        public IActionResult CreateAndUpdate(Category obj)
-        {
-            if (ModelState.IsValid)
-            {
-                //Create new
-                if (obj.Id == 0)
-                {
-                    _unitOfWork.Category.Add(obj);
-
-                }
-                else
-                {
-                    _unitOfWork.Category.Update(obj);
-                }
-                _unitOfWork.Save();
-                TempData["success"] = "Category Created Successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-
-        #region API CALL
-        public IActionResult GetAll()
-        {
-            List<Category> categoryList = _unitOfWork.Category.GetAll().ToList();
-            return Json(new
-            {
-                data = categoryList
-            });
-        }
-
-        public IActionResult Delete(int? id)
-        {
-            Category category = _unitOfWork.Category.Get(u => u.Id == id);
-            if (category == null)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = "Error while deleting"
-                });
-            }
-            _unitOfWork.Category.Remove(category);
-            _unitOfWork.Save();
-            return Json(new
-            {
-                success = true,
-                message = "Product Updated Successfully"
-            });
-        }
-
-        #endregion
-
+        return View();
     }
+    [HttpPost]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        Category? category = await _unitOfWork.Category.Get(x => x.Id == id);
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+        await _unitOfWork.Category.Remove(category);
+        await _unitOfWork.Save();
+        _notyfService.Success("Deleted!");
+        return RedirectToAction("Index");
+    }
+
+   
+
 }
