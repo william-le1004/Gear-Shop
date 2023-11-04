@@ -1,7 +1,4 @@
-﻿using System;
-using Infrastructure.Persistence;
-
-namespace Test;
+﻿namespace Test;
 
 public static class Program
 {
