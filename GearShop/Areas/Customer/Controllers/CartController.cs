@@ -127,7 +127,7 @@ public class CartController : Controller
     {
         if (_contxt.HttpContext.Session.GetString("User") == null)
         {
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Login", "Account");
         }
         return View();
     }
