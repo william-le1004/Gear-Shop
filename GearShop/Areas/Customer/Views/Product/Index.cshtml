@@ -37,59 +37,52 @@
                                 </select>
                             </div>
                             <div class="shop_filter">
-                                @* <partial name="_FilterPartial"></partial> *@
-                                <select id="filter" name="filter">
-                                    @* @foreach (var x in Model.Items)
-                                    {
-                                        
-                                    } *@
-                                    <option disabled selected>
-                                    <a asp-action="Index" asp-route-CatID="">
-                                    --Select Category--
-                                    </a>
-                                    </option>
+                                <select id="filter" name="filter" asp-items="@ViewBag.SelectList">
+                                    <option disabled selected>-Select Category-</option>
+                                    <option value="0" name="CatID">All</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="shop_gallery">
-                        <div class="row">
-                            @foreach (var item in Model.Items)
-                            {
-                                <div class="col-lg-3 col-md-4 col-sm-6">
-                                    <article class="single_product">
-                                        <figure>
-                                            <div class="product_thumb">
-                                                <a asp-action="Details" asp-route-id="@item.Id">
-                                                    <img src="@item.ImgUrl" alt="">
-                                                </a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">Sale</span>
-                                                </div>
-                                            </div>
-                                            <figcaption class="product_content">
-                                                <h4>
-                                                    <a asp-action="Details" asp-route-id="@item.Id" style="white-space: nowrap;">
-                                                        @item.Name.Truncate(30)
-                                                    </a>
-                                                </h4>
-                                                <div class="price_box">
-                                                    <span class="old_price">@item.Price.ToString("c")</span>
-                                                    <span class="current_price">@item.Price.ToString("c")</span>
-                                                </div>
-                                                <div>
-                                                    <a class="btn btn-link w-100" href="/Customer/Cart/AddItem?productID=@item.Id&quantity=1&ctl=shop">
-                                                        <i class="bi bi-cart-plus"></i> Add To Cart
-                                                    </a>
+                        <div class="shop_gallery">
+                            <div class="row">
 
+                                @foreach (var item in Model.Items)
+                                {
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <article class="single_product">
+                                            <figure>
+                                                <div class="product_thumb">
+                                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                                        <img src="@item.ImgUrl" alt="">
+                                                    </a>
+                                                    <div class="label_product">
+                                                        <span class="label_sale">Sale</span>
+                                                    </div>
                                                 </div>
-                                            </figcaption>
-                                        </figure>
-                                    </article>
-                                </div>
-                            }
+                                                <figcaption class="product_content">
+                                                    <h4>
+                                                        <a asp-action="Details" asp-route-id="@item.Id" style="white-space: nowrap;">
+                                                            @item.Name.Truncate(30)
+                                                        </a>
+                                                    </h4>
+                                                    <div class="price_box">
+                                                        <span class="old_price">@item.Price.ToString("c")</span>
+                                                        <span class="current_price">@item.Price.ToString("c")</span>
+                                                    </div>
+                                                    <div>
+                                                        <a class="btn btn-link w-100" href="/Customer/Cart/AddItem?productID=@item.Id&quantity=1&ctl=shop">
+                                                            <i class="bi bi-cart-plus"></i> Add To Cart
+                                                        </a>
+
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                        </article>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
                     <ul class="pagination justify-content-center" id="pagination"></ul>
                 </div>
             </div>
@@ -99,6 +92,24 @@
 
 @section Scripts{
     <partial name="_CustomPaging" />
-  
-   
+     <script>
+        var filter = document.getElementById("filter");
+        var currentFilter = "@ViewBag.CurrentFilter";
+
+        if (currentFilter) {
+            var options = filter.options;
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === currentFilter) {
+                    options[i].selected = true;
+                    break;
+                }
+            }
+        }
+
+        filter.addEventListener("change", function () {
+            var selectedValue = this.value;
+            window.location.href = "/Customer/Product/Index?CatID=" + selectedValue;
+        });
+    </script> 
+    
 }

@@ -1,4 +1,5 @@
-﻿using Application.Pagination;
+﻿using Application.Common.ExtensionMethods;
+using Application.Pagination;
 using Domain.Entities;
 using GearShopWeb.ViewModels;
 using Infrastructure.Interface.IRepository;
@@ -25,50 +26,47 @@ namespace GearShop.Areas.Customer.Controllers
         // GET: ProductController
         public async Task<ActionResult> Index(int? pageNumber, int CatID = 0)
         {
-            ViewBag.SelectList = _db.Categories.AsNoTracking().Select(x => new SelectListItem
+            ViewBag.SelectList = await _db.Categories.AsNoTracking().Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
-            });
-            PaginatedList<HomeProductVM> productList;
+            }).ToListAsync();
 
-            if (CatID != 0)
-            {
-                var query = _db.Products.AsNoTracking()
-                    .Where(x => x.CategoryId == CatID)
-                    .Select(x => new HomeProductVM
-                    {
-                        Name = x.Name,
-                        Price = x.Price,
-                        ImgUrl = x.ImgUrl,
-                        Id = x.Id,
-                        category = _db.Categories.AsNoTracking().ToList()
-                    })
-                    .OrderByDescending(x => x.Id);
-
-                productList = await PaginatedList<HomeProductVM>.CreateAsync(query, pageNumber ?? 1, 4);
-            }
-            else
-            {
-                var query = _db.Products.AsNoTracking()
-                    .Select(x => new HomeProductVM
-                    {
-                        Name = x.Name,
-                        Price = x.Price,
-                        ImgUrl = x.ImgUrl,
-                        Id = x.Id,
-                        category = _db.Categories.AsNoTracking().ToList()
-                    })
-                    .OrderByDescending(x => x.Id);
-
-                productList = await PaginatedList<HomeProductVM>.CreateAsync(query, pageNumber ?? 1, 4);
-            }
-            //var productList = await _db.Products.AsNoTracking()
-            //   .Select(x => new HomeProductVM { Name = x.Name, Price = x.Price, ImgUrl = x.ImgUrl, Id = x.Id })
-            //   .PaginatedListAsync(pageNumber ?? 1, 6);
-            return View(productList); // Pass 'productList' to the view
+            ViewBag.CurrentFilter = CatID;
+            var query = await _db.Products
+                 .AsNoTracking()
+                 .Where(x => CatID == 0 || x.CategoryId == CatID)
+                 .OrderByDescending(x => x.Id)
+                 .Select(x => new HomeProductVM
+                 {
+                     Name = x.Name,
+                     Price = x.Price,
+                     ImgUrl = x.ImgUrl,
+                     Id = x.Id
+                 }).PaginatedListAsync(pageNumber ?? 1, 6);
+            return View(query);
         }
 
+        [HttpGet]
+        //public async Task<IActionResult> GetProductByCategory(int CatID, int pageNumber = 1)
+        //{
+        //    var query = _db.Products.AsNoTracking()
+        //        .Where(x => x.CategoryId == CatID)
+        //        .Select(x => new HomeProductVM
+        //        {
+        //            Name = x.Name,
+        //            Price = x.Price,
+        //            ImgUrl = x.ImgUrl,
+        //            Id = x.Id,
+        //            category = _db.Categories.AsNoTracking().ToList()
+        //        })
+        //        .OrderByDescending(x => x.Id);
+
+        //    var productList = await PaginatedList<HomeProductVM>.CreateAsync(query, pageNumber, 4);
+
+        //    // Pass productList to the corresponding partial view
+        //    return PartialView("_ProductListPartial", productList);
+        //}
 
 
         public ActionResult Filter(int CatID = 0)
