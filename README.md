@@ -34,6 +34,12 @@ HTML, CSS, C#,...
 
 **SQL:** MS SQL SERVER
 
+### Built With
+
+* [![.Net][.net.com]][.net-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![JQuery][JQuery.com]][JQuery-url]
+* [![MicrosoftSQLServer][mssql.com]][mssql-url]
 
 ## Features
 
