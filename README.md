@@ -37,10 +37,12 @@ HTML, CSS, C#,...
 ### Built With
 
 
-* [![.Net][[.net.com](https://dotnet.microsoft.com/en-us/)]][.net-url]
-* [![Bootstrap][[Bootstrap.com](https://getbootstrap.com/)]][Bootstrap-url]
-* [![JQuery][[JQuery.com](https://jquery.com/)]][JQuery-url]
-* [![MicrosoftSQLServer][[mssql.com](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)]][mssql-url]
+<ul dir="auto">
+<li><a href="https://dotnet.microsoft.com/en-us/" rel="nofollow"><img src="https://camo.githubusercontent.com/f36a579a7440dd2cd03da4903249f86d0d44cb7020fd902512bccd139784b363/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2e4e45542d3543324439313f7374796c653d666f722d7468652d6261646765266c6f676f3d2e6e6574266c6f676f436f6c6f723d7768697465" alt=".Net" data-canonical-src="https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&amp;logo=.net&amp;logoColor=white" style="max-width: 100%;"></a></li>
+<li><a href="https://getbootstrap.com" rel="nofollow"><img src="https://camo.githubusercontent.com/b13ed67c809178963ce9d538175b02649800772be1ce0cb02da5879e5614e236/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f426f6f7473747261702d3536334437433f7374796c653d666f722d7468652d6261646765266c6f676f3d626f6f747374726170266c6f676f436f6c6f723d7768697465" alt="Bootstrap" data-canonical-src="https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&amp;logo=bootstrap&amp;logoColor=white" style="max-width: 100%;"></a></li>
+<li><a href="https://jquery.com" rel="nofollow"><img src="https://camo.githubusercontent.com/15b7da9c5e50455ef7c50a5d642afad7ab8d752e575010116727c3865beb026d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6a51756572792d3037363941443f7374796c653d666f722d7468652d6261646765266c6f676f3d6a7175657279266c6f676f436f6c6f723d7768697465" alt="JQuery" data-canonical-src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&amp;logo=jquery&amp;logoColor=white" style="max-width: 100%;"></a></li>
+<li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" rel="nofollow"><img src="https://camo.githubusercontent.com/88afa53aae635c5b291df317cc91e6cd48a551a28a84a6add3664d311fe28765/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d6963726f736f667425323053514c2532305365727665722d4343323932373f7374796c653d666f722d7468652d6261646765266c6f676f3d6d6963726f736f667425323073716c253230736572766572266c6f676f436f6c6f723d7768697465" alt="MicrosoftSQLServer" data-canonical-src="https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&amp;logo=microsoft%20sql%20server&amp;logoColor=white" style="max-width: 100%;"></a></li>
+</ul>
 
 
 ## Features
