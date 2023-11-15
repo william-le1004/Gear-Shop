@@ -55,9 +55,11 @@ public class CartController : Controller
         }
         return View(list);
     }
-    public IActionResult AddItem(int productID, int quantity, string ctl)
+
+    public async Task<IActionResult> AddItem(int productID)
     {
-        var product = _db.Products.Include(x => x.Category).FirstOrDefault(x => x.Id == productID);
+        int quantity = 1;
+        var productItem = await _db.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == productID);
         var cartSession = _contxt.HttpContext.Session.GetString("CartSession");
 
         var list = cartSession != null ? JsonConvert.DeserializeObject<List<CartItem>>(cartSession) : new List<CartItem>();
@@ -71,13 +73,18 @@ public class CartController : Controller
         }
         else
         {
-            list.Add(new CartItem { product = product, Quantity = quantity });
+            list.Add(new CartItem { product = productItem, Quantity = quantity });
         }
 
         _contxt.HttpContext.Session.SetString("CartSession", JsonConvert.SerializeObject(list));
-        _notyfService.Success("Added Successfully");
-        return RedirectToAction("Index", "Product");
+        return Json(new
+        {
+            Message = "Success",
+            Quantity = list.Count,
+            CartList = list
+        });
     }
+
     public JsonResult Update(string cartModel)
     {
         var cartJson = JsonConvert.DeserializeObject<List<CartItem>>(cartModel);
@@ -123,12 +130,55 @@ public class CartController : Controller
 
     }
 
+    public async Task<JsonResult> GetOrderDetail(int id)
+    {
+        try
+        {
+            var orderDetail = await _db.OrderDetail
+                .Where(x => x.OrderID == id)
+                .Include(x => x.Product)
+                .ToListAsync();
+
+            if (orderDetail != null)
+            {
+                var joinedData = orderDetail.Select(od => new
+                {
+                    ImgUrl = od.Product.ImgUrl,
+                    OrderId = od.Id,
+                    ProductName = od.Product.Name,
+                    Quantity = od.Quantity,
+                    UnitPrice = od.UnitPrice,
+                    TotalPrice = od.TotalPrice
+                });
+
+                return Json(new
+                {
+                    code = 200,
+                    order = joinedData,
+                    message = "Success"
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    code = 404,
+                    message = "Not Found"
+                });
+            }
+        }
+        catch (Exception e)
+        {
+            return Json(new
+            {
+                code = 500,
+                message = "Fail"
+            });
+        }
+    }
+
     public IActionResult CheckOut()
     {
-        if (_contxt.HttpContext.Session.GetString("User") == null)
-        {
-            return RedirectToAction("Login", "Account");
-        }
         return View();
     }
 
@@ -176,7 +226,12 @@ public class CartController : Controller
                 UnitPrice = item.product.Price,
                 TotalPrice = price
             };
-
+            var product = await _db.Products.FindAsync(item.product.Id);
+            if (product != null)
+            {
+                product.Stock -= item.Quantity;
+                _db.Entry(product).Property(x => x.Stock).IsModified = true;
+            }
             _db.OrderDetail.Add(orderDetail);
 
             unitPrice += price;

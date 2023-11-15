@@ -73,16 +73,14 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-8">
-                            <p class="ms-3">Add additional notes and payment information</p>
-
                         </div>
                         <div class="col-xl-3">
                             <ul class="list-unstyled">
-                                <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>$1110</li>
-                                <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(15%)</span>$111</li>
+                                <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>@list.Sum(x=>x.Quantity * x.Product.Price).ToString("C")</li>
+                                <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(0%)</span>$0</li>
                             </ul>
                             <p class="text-black float-start">
-                                <span class="text-black me-3"> Total Amount</span><span style="font-size: 25px;">@list.Sum(x=>x.Quantity * x.Product.Price).ToString("C")</span>
+                                <span class="text-black me-3"> Total Amount</span><span style="font-size: 18px;">@list.Sum(x=>x.Quantity * x.Product.Price).ToString("C")</span>
                             </p>
                         </div>
                     </div>

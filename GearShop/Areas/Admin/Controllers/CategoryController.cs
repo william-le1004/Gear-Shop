@@ -11,15 +11,30 @@ namespace ShoppingWeb.Areas.Admin.Controllers;
 [Area("Admin")]
 public class CategoryController : BaseController
 {
+    #region Readonlys
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
+    #endregion
+
     public INotyfService _notyfService { get; }
-    public CategoryController(IUnitOfWork unitOfWork, INotyfService notyfService, ApplicationDbContext db)
+
+    #region Constructor
+
+    public CategoryController(IUnitOfWork unitOfWork,
+        IWebHostEnvironment webHostEnvironment,
+        INotyfService notyfService,
+        ApplicationDbContext db)
     {
         _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
         _notyfService = notyfService;
         _db = db;
     }
+
+    #endregion
     public async Task<IActionResult> Index(int? pageNumber)
     {
         var paginatedList = await _db.Categories.PaginatedListAsync(pageNumber ?? 1, 4);

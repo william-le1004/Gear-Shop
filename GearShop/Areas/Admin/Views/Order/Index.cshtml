@@ -1,4 +1,4 @@
-﻿@model PaginatedList<Product>
+﻿@model PaginatedList<Order>
 
 <nav class="d-flex justify-content-center">
     <ol class="breadcrumb">
@@ -15,27 +15,30 @@
 
             <div class="col-6">
 
-                <h5 class="card-title">Product List</h5>
+                <h5 class="card-title">Order List</h5>
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Product" asp-action="CreateAndUpdate" class="btn btn-dark rounded-pill"
+                <a asp-controller="Category" asp-action="CreateAndUpdate"
+                   class="btn btn-dark rounded-pill"
                    style="margin-top:15px">
-                    <i class="bi bi-plus-circle"></i>  Create New Product
+                    <i class="bi bi-plus-circle"></i>  Create New Category
                 </a>
             </div>
 
         </div>
         <div class="table-responsive">
-        <table id="tblData" class="table" style="width:100%">
+        <table id="tblData" class="table table-hover" style="width:100%">
             <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Product Image</th>
-                    <th scope="col"></th>
+                    <th scope="col">ID</th>
+                    <th class="w-10">Receiver</th>
+                    <th class="w-10">Email</th>
+                    <th class="w-10">Phone Number</th>
+                    <th class="w-10">Address</th>
+                    <th class="w-10">Date</th>
+                    <th class="w-10">Amount Product</th>
+                    <th class="w-10">Amount Product</th>
+                    <th class="w-15">Edit   |   Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,25 +46,24 @@
                 {
                     <tr>
                         <td>
-                            @item.Name.Truncate(50)
+                            @item.Id
                         </td>
-                        <td>@item.Price.ToString("c")</td>
-                        <td>@item.Description.Truncate(50)</td>
-                        <td>@item.Stock</td>
-                        <td>@item.Category.Name</td>
-                        <td>
-                            <img src="@item.ImgUrl" style="width:100%">
-                        </td>
-                        <td style="width:20%;">
+                        <td>@item.LastName @item.FirstName</td>
+                        <td>@item.Email</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.ShipAddress</td>
+                        <td>@item.CreateDate</td>
+                        <td>@item.OrderDetails.Count()</td>
+                        <td>@item.OrderDetails.Sum(x=>x.TotalPrice).ToString("C")</td>
+                        <td style="width:15%;">
                             <div style="display:flex;justify-content:space-evenly">
                                 <a asp-action="CreateAndUpdate" asp-route-id="@item.Id" class="btn btn-success btn-sm">
-                                    <span class="ti-pencil-alt text-white t"> Edit</span>
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <button value="@item.Id" class="delete-button btn btn-danger btn-sm">
-                                    <span class="ti-eraser text-white"> Delete</span>
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </div>
-
                         </td>
                     </tr>
                 }
@@ -79,3 +81,5 @@
 @section Scripts{
     <partial name="_CustomPaging" />
 }
+
+

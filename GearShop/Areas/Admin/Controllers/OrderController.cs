@@ -1,28 +1,49 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using Application.Common.ExtensionMethods;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Domain.Entities;
 using GearShopWeb.Areas.Admin.Controllers;
 using Infrastructure.Interface.IRepository;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GearShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class OrderController : BaseController
     {
-        #region DI
+        #region Readonlys
+
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        #endregion
+
         public INotyfService _notyfService { get; }
-        public OrderController(IUnitOfWork unitOfWork, INotyfService notyfService)
+
+        #region Constructor
+
+        public OrderController(IUnitOfWork unitOfWork,
+            IWebHostEnvironment webHostEnvironment,
+            INotyfService notyfService,
+            ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
             _notyfService = notyfService;
+            _db = db;
         }
+
         #endregion
 
         // GET: OrderController
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int? pageNumber)
         {
-            IEnumerable<Order> orders = (IEnumerable<Order>)_unitOfWork.User.GetAll();
+            var orders = await _db.Order
+                .Include(x=>x.OrderDetails)
+                .AsNoTracking()
+                .PaginatedListAsync(pageNumber ?? 1, 4);
             return View(orders);
         }
 

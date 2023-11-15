@@ -1,6 +1,4 @@
-﻿@model List<Order>
-
-
+﻿@model PaginatedList<Order>
 <div class="breadcrumbs_area breadcrumbs__bg">
     <div class="container">
         <div class="row">
@@ -22,49 +20,233 @@
     <div class="card w-75 m-auto mb-5">
         <div class="card-body">
             <h2 class="card-title mb-2">My Order</h2>
-            <div class="row g-3">
+            <div class="table-responsive">
                 <!-- Floating Labels Form -->
                 <!-- Your form elements go here -->
-                @if (Model != null && Model.Any())
+                @if (Model != null && Model.Items.Any())
                 {
                     <table id="tblData" class="table" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col">Product Image</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Unit Price</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Time</th>
+                                <th scope="col">Order Number</th>
+                                <th scope="col">Recipient</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Date</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach (var order in Model)
-                            {
-                                @foreach (var item in order.OrderDetails)
-                                {
-                                    <tr>
-                                        <td class="w-25">
-                                            <img src="@item.Product.ImgUrl" style="width:50%">
-                                        </td>
-                                        <td class="w-25">
-                                            @item.Product.Name
-                                        </td>
-                                        <td class="w-15">@item.UnitPrice.ToString("c")</td>
-                                        <td class="w-15">@item.TotalPrice.ToString("c")</td>
-                                        <td class="w-10">@item.Quantity</td>
-                                        <td class="w-15">@order.CreateDate.ToString("MM/dd/yyyy HH:mm")</td>
-                                    </tr>
-                                }
-                            }
+                        <tbody id="order-table">
                         </tbody>
                     </table>
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                    <form hidden id="page-form">
+                        <input id="page-index" name="pageNumber" />
+                    </form>
+
                 }
                 else
                 {
-                    <p>Order details are not available.</p>
+                    <p>Order are not available.</p>
                 }
             </div>
         </div>
     </div>
 </div>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="viewDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Order Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Image</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderDetail-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark fw-bold">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="your-name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="your-name" name="your-name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="your-surname" class="form-label">Your Surname</label>
+                            <input type="text" class="form-control" id="your-surname" name="your-surname" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="your-email" class="form-label">Your Email</label>
+                            <input type="email" class="form-control" id="your-email" name="your-email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="your-subject" class="form-label">Your Subject</label>
+                            <input type="text" class="form-control" id="your-subject" name="your-subject">
+                        </div>
+                        <div class="col-12">
+                            <label for="your-message" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="your-message" name="your-message" rows="5" required></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark fw-bold">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var pageNumber = 1;
+        $(document).ready(function () {
+            loadData(pageNumber);
+        });
+
+        $('#page-form').submit(function (event) {
+            event.preventDefault();
+            pageNumber = $('#page-index').val();
+            loadData(pageNumber);
+        });
+
+        $(document).on('click', "a[name='view']", function () {
+            let idProduct = $(this).closest('tr').attr('id');
+            $.ajax({
+                url: "/Customer/Cart/GetOrderDetail",
+                type: "GET",
+                data: { id: idProduct },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        $.each(data.order, function (k, v) {
+                            let tr = '<tr>';
+                            tr += '<td>' + '<img src="' + v.imgUrl + '" alt="Product Image"></td>';
+                            tr += '<td>' + v.productName + '</td>';
+                            tr += '<td>' + v.quantity + '</td>';
+                            tr += '<td>' + formatCurrency(v.unitPrice) + '</td>';
+                            tr += '<td>' + formatCurrency(v.totalPrice) + '</td>';
+                            tr += '</tr>';
+                            $('#orderDetail-table').append(tr);
+                        });
+                    } else {
+                        console.log("Data not found.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $(document).on('click', "a[name='delete']", function () {
+            let idProduct = $(this).closest('tr').attr('id');
+            $.ajax({
+                url: "/Customer/Cart/GetOrderDetail",
+                type: "GET",
+                data: { id: idProduct },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        $.each(data.order, function (k, v) {
+                            let tr = '<tr>';
+                            tr += '<td>' + '<img src="' + v.imgUrl + '" alt="Product Image"></td>';
+                            tr += '<td>' + v.productName + '</td>';
+                            tr += '<td>' + v.quantity + '</td>';
+                            tr += '<td>' + formatCurrency(v.unitPrice) + '</td>';
+                            tr += '<td>' + formatCurrency(v.totalPrice) + '</td>';
+                            tr += '</tr>';
+                            $('#orderDetail-table').append(tr);
+                        });
+                    } else {
+                        console.log("Data not found.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        function formatCurrency(amount) {
+            // Format currency according to your requirements
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+
+        function loadData(pageNumber) {
+            $.ajax({
+                url: "/Customer/Account/MyOrderAjax",
+                type: "GET",
+                data: { pageNumber: pageNumber },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        $('#order-table').empty();
+                        $.each(data.orderList.items, function (k, v) {
+                            let tr = '<tr id="' + v.id + '">';
+                            tr += '<td>' + v.id + '</td>';
+                            tr += '<td>' + v.firstName + ' ' + v.lastName + '</td>';
+                            tr += '<td>' + v.shipAddress + '</td>';
+                            tr += '<td>' + v.email + '</td>';
+                            tr += '<td>' + new Date(v.createDate).toLocaleString() + '</td>';
+                            tr += '<td>';
+                            tr += '<a class="btnView btn btn-outline-success" name="view" data-bs-toggle="modal" data-bs-target="#viewDetails">View</a>&nbsp';
+                            // tr += ' &nbsp<a class="btnDelete btn btn-outline-success" name="delete">Detele</a>'
+                            tr += '</td>';
+                            tr += '</tr>';
+                            $('#order-table').append(tr);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
+        $('#pagination').jqPaginator({
+            totalPages: @Model.TotalPages,
+            visiblePages: 3,
+            currentPage: @Model.PageIndex,
+            first: '<li class="page-item"><a class="page-link" href="javascript:;">First</a></li>',
+            // prev: '<li class="page-item"><a class="page-link" href="javascript:;">‹</a></li>',
+            // next: '<li class="page-item"><a class="page-link" href="javascript:;">›</a></li>',
+            page: '<li class="page-item"><a class="page-link" href="javascript:;">{{page}}</a></li>',
+            last: '<li class="page-item"><a class="page-link" href="javascript:;">Last</a></li>',
+            onPageChange: function (num) {
+                if (this.currentPage != num) {
+                    $('#page-index').val(num),
+                        $('#page-form').submit()
+                }
+            }
+        });
+    </script>
+}

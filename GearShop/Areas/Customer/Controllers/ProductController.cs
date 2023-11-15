@@ -35,6 +35,7 @@ namespace GearShop.Areas.Customer.Controllers
             ViewBag.CurrentFilter = CatID;
             var query = await _db.Products
                  .AsNoTracking()
+                 .Include(x=>x.Category)
                  .Where(x => CatID == 0 || x.CategoryId == CatID)
                  .OrderByDescending(x => x.Id)
                  .Select(x => new HomeProductVM
@@ -42,48 +43,12 @@ namespace GearShop.Areas.Customer.Controllers
                      Name = x.Name,
                      Price = x.Price,
                      ImgUrl = x.ImgUrl,
-                     Id = x.Id
-                 }).PaginatedListAsync(pageNumber ?? 1, 6);
+                     Id = x.Id,
+                     category = x.Category.Name
+                 }).PaginatedListAsync(pageNumber ?? 1, 4);
             return View(query);
         }
 
-        [HttpGet]
-        //public async Task<IActionResult> GetProductByCategory(int CatID, int pageNumber = 1)
-        //{
-        //    var query = _db.Products.AsNoTracking()
-        //        .Where(x => x.CategoryId == CatID)
-        //        .Select(x => new HomeProductVM
-        //        {
-        //            Name = x.Name,
-        //            Price = x.Price,
-        //            ImgUrl = x.ImgUrl,
-        //            Id = x.Id,
-        //            category = _db.Categories.AsNoTracking().ToList()
-        //        })
-        //        .OrderByDescending(x => x.Id);
-
-        //    var productList = await PaginatedList<HomeProductVM>.CreateAsync(query, pageNumber, 4);
-
-        //    // Pass productList to the corresponding partial view
-        //    return PartialView("_ProductListPartial", productList);
-        //}
-
-
-        public ActionResult Filter(int CatID = 0)
-        {
-            var url = $"/Customer/Product/Index?CatID={CatID}";
-            if (CatID == 0)
-            {
-                url = $"/Customer/Product";
-            }
-            //var products = _unitOfWork.Product.GetAll();
-            //return View(products);
-            return Json(new
-            {
-                status = "success",
-                redirectUrl = url
-            });
-        }
 
         public async Task<ActionResult> Details(int id)
         {

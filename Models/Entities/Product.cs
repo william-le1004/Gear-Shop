@@ -34,7 +34,7 @@ namespace Domain.Entities
 
         [DisplayName("Product Image")]
         [ValidateNever]
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
 
         [ValidateNever]
         public IEnumerable<OrderDetail> OrderDetail { get; set; }
