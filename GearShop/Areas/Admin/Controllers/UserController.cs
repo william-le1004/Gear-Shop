@@ -11,18 +11,29 @@ namespace GearShop.Areas.Admin.Controllers
     [Area("Admin")]
     public class UserController : BaseController
     {
-        #region DI
+        #region Readonlys
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        #endregion
+
         public INotyfService _notyfService { get; }
+
+        #region Constructor
+
         public UserController(IUnitOfWork unitOfWork,
+            IWebHostEnvironment webHostEnvironment,
             INotyfService notyfService,
             ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
             _notyfService = notyfService;
             _db = db;
         }
+
         #endregion
         // GET: UserController1
         public async Task<ActionResult> Index(int? pageNumber)

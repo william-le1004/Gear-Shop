@@ -67,14 +67,19 @@
                             <p>@Model.Description</p>
                         </div>
                         <div class="product_variant_quantity d-flex align-items-center justify-content-center mt-2">
-                            <a class="btn btn-link w-50" style="margin-right:15px" href="/Customer/Cart/AddItem?productID=@Model.Id&quantity=1&ctl=detail">
+                            <a class="addToCart btn btn-link w-50" style="margin-right:15px" data-id="@Model.Id">
                                 <i class="bi bi-cart-plus"></i> Add To Cart
                             </a>
                             <a class="btn btn-link w-50" href="/Customer/Cart/AddItem?productID=@Model.Id&quantity=1&ctl=detail">
                                 <i class="bi bi-cart4"></i> Buy Now
                             </a>
                         </div>
-
+                        <div class="product_variant_quantity d-flex align-items-center justify-content-center mt-2">
+                            <a class="btn btn-link w-50" style="margin-right:15px" asp-action="Index">
+                                <i class="bi bi-cart-plus"></i> Return
+                            </a>
+                            
+                        </div>
                     </div>
                 </div>
             </div>

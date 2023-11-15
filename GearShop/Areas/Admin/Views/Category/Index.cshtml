@@ -26,7 +26,7 @@
             </div>
 
         </div>
-
+        <div class="table-responsive">
         <table id="tblData" class="table table-hover" style="width:100%">
             <thead>
                 <tr>
@@ -59,7 +59,7 @@
         </table>
         <p>Page @Model.PageIndex / @Model.TotalPages</p>
         <ul class="pagination" id="pagination"></ul>
-
+        </div>
         <form hidden id="page-delete" method="post" asp-action="Delete">
             <input id="current-id" name="id" />
         </form>

@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" href="https://hasthemes.com/wp-content/uploads/2019/04/cropped-favicon-180x180.png" />
     <meta name="msapplication-TileImage" content="https://hasthemes.com/wp-content/uploads/2019/04/cropped-favicon-270x270.png" />
 
-    <partial name="_FirstCSSPartial"></partial>
+    <partial name="_CSSPartial"></partial>
    
 </head>
 <body>
@@ -25,7 +25,8 @@
     <partial name="_HeaderPartial"></partial>
 
     <!--mini cart-->
-    <partial name="_MiniCartPartial"></partial>
+    @* <partial name="_MiniCartPartial"></partial> *@
+    @* @await Component.InvokeAsync("HeaderCart") *@
     
     <!--mini cart end-->
 
@@ -47,7 +48,7 @@
     <!-- ======= Footer ======= -->
     <partial name="_FooterPartial"></partial>
     
-    <partial name="_EndJSPartial"></partial>
+    <partial name="_JSPartial"></partial>
     @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts",required:false)
 

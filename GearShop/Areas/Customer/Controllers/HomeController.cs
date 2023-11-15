@@ -30,9 +30,40 @@ namespace GearShop.Areas.Customer.Controllers
         {
             var productList = await _db.Products.AsNoTracking()
                 .Select(x => new HomeProductVM { Name = x.Name, Price = x.Price, ImgUrl = x.ImgUrl, Id = x.Id })
+                .Take(4)
+                .ToListAsync();
+
+            ViewBag.newestProduct = await _db.Products.AsNoTracking()
+                .Select(x => new HomeProductVM { Name = x.Name, Price = x.Price, ImgUrl = x.ImgUrl, Id = x.Id })
+                .OrderByDescending(x => x.Id)
+                .Take(4)
+                .ToListAsync();
+
+            ViewBag.bestSeller = await _db.Products
+                .Join(_db.OrderDetail,
+                    product => product.Id,
+                    orderDetail => orderDetail.ProductID,
+                     (product, orderDetail) => new HomeProductVM
+                     {
+                         Id = product.Id,
+                         Name = product.Name,
+                         Price = product.Price,
+                         ImgUrl = product.ImgUrl,
+                     })
+                .GroupBy(item => new { item.Id, item.Name, item.Price, item.ImgUrl })
+                .AsNoTracking()
+                .Take(4)
+                .Select(group => new HomeProductVM
+                {
+                    Id = group.Key.Id,
+                    Name = group.Key.Name,
+                    Price = group.Key.Price,
+                    ImgUrl = group.Key.ImgUrl,
+                })
                 .ToListAsync();
             return View(productList);
         }
+       
         public IActionResult ContactUs() => View();
         public IActionResult Blog() => View();
         public IActionResult Privacy() => View();

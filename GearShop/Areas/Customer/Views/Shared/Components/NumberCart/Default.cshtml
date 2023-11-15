@@ -1,0 +1,15 @@
+﻿@{
+    var cartSession = cont.HttpContext.Session.GetString("CartSession");
+    var list = new List<CartItem>();
+    if (cartSession != null)
+    {
+        list = JsonSerializer.Deserialize<List<CartItem>>(cartSession);
+    }
+}
+<li class="shopping_cart">
+    <a asp-controller="Cart" asp-action="Index">
+        <img src="~/assets/img/icon/cart.png"
+             alt="">
+        <span class="badge text-dark info" id="count-cart">@list.Count()</span>
+    </a>
+</li>

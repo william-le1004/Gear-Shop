@@ -49,8 +49,6 @@
                                 string user = cont.HttpContext.Session.GetString("User");
                                 string role = cont.HttpContext.Session.GetString("Admin");
                                 string id = cont.HttpContext.Session.GetString("ID");
-                                var cart = cont.HttpContext.Session.GetString("CartSession");
-                                var list = cart != null ? JsonSerializer.Deserialize<List<CartItem>>(cart) : new List<CartItem>();
                             }
                             <ul class="d-flex">
                                 <li class="menu-item-has-children"><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -77,13 +75,7 @@
                                              alt="">
                                     </a>
                                 </li>
-                                <li class="shopping_cart">
-                                    <a href="#">
-                                        <img src="~/assets/img/icon/cart.png"
-                                             alt="">
-                                        <span class="badge text-dark info" id="count">@list.Count()</span>
-                                    </a>
-                                </li>
+                                @await Component.InvokeAsync("NumberCart")
                                 <li class="account_link_menu">
                                     <a href="#">
                                         <img src="~/assets/img/icon/person.png"
