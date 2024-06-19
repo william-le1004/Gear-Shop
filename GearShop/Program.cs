@@ -6,19 +6,17 @@ using Infrastructure.Interface.IRepository;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.           Install Runtime nuget
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                 options.UseSqlServer(
-                 builder.Configuration.
-                 GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.Configure<AuthMessageSenderOption>(builder.Configuration.GetSection(AuthMessageSenderOption.AuthMessagesSender));
+builder.Services.Configure<AuthMessageSenderOption>(
+    builder.Configuration.GetSection(AuthMessageSenderOption.AuthMessagesSender));
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -37,10 +35,11 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
-
 builder.Services.AddNotyf(config =>
 {
-    config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight;
+    config.DurationInSeconds = 10;
+    config.IsDismissable = true;
+    config.Position = NotyfPosition.BottomRight;
 });
 
 var app = builder.Build();
@@ -63,7 +62,7 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

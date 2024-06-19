@@ -23,28 +23,30 @@
 
 <body>
 
-    <!-- ======= Header ======= -->
-    <partial name="_HeaderPartial"></partial>
-    <!-- ======= Sidebar ======= -->
-    <partial name="_LeftSidebarPartial"></partial>
+<!-- ======= Header ======= -->
+<partial name="_HeaderPartial"></partial>
+<!-- ======= Sidebar ======= -->
+<partial name="_LeftSidebarPartial"></partial>
 
-    <main id="main" class="main">
+<main id="main" class="main">
 
-        @RenderBody()
+    @RenderBody()
 
-    </main>
-    <!-- End #main -->
+</main>
+<!-- End #main -->
 
-    <!-- ======= Footer ======= -->
-    <partial name="_FooterPartial"></partial>
+<!-- ======= Footer ======= -->
+<partial name="_FooterPartial"></partial>
 
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
 
-    
-    <partial name="_Js"></partial>
 
-    @await Component.InvokeAsync("Notyf")
-    @await RenderSectionAsync("Scripts",required:false);
+<partial name="_Js"></partial>
+
+@await Component.InvokeAsync("Notyf")
+@await RenderSectionAsync("Scripts", false);
 </body>
 
 </html>

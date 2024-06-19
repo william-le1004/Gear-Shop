@@ -7,7 +7,9 @@
     <h1>Dashboard</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">
+                <a href="index.html">Home</a>
+            </li>
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
     </nav>
@@ -89,26 +91,30 @@
 
                             <table class="table table-borderless">
                                 <thead>
-                                    <tr>
-                                        <th scope="col">Preview</th>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Sold</th>
-                                        <th scope="col">Revenue</th>
-                                    </tr>
+                                <tr>
+                                    <th scope="col">Preview</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Sold</th>
+                                    <th scope="col">Revenue</th>
+                                </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach (var item in x)
-                                    {
-                                        <tr>
-                                            <th scope="row"><img src="@item.Product.ImgUrl" alt=""></th>
-                                            <td><a href="#" class="text-primary fw-bold">@item.Product.Name.Truncate(50)</a></td>
-                                            <td>@item.UnitPrice.ToString("c")</td>
-                                            <td class="fw-bold">@item.Quantity</td>
-                                            <td>@item.TotalPrice.ToString("c")</td>
-                                        </tr>
-                                    }
+                                @foreach (var item in x)
+                                {
+                                    <tr>
+                                        <th scope="row">
+                                            <img src="@item.Product.ImgUrl" alt="">
+                                        </th>
+                                        <td>
+                                            <a href="#" class="text-primary fw-bold">@item.Product.Name.Truncate(50)</a>
+                                        </td>
+                                        <td>@item.UnitPrice.ToString("c")</td>
+                                        <td class="fw-bold">@item.Quantity</td>
+                                        <td>@item.TotalPrice.ToString("c")</td>
+                                    </tr>
+                                }
                                 </tbody>
                             </table>
 
@@ -118,7 +124,7 @@
 
                 </div><!-- end recent sales -->
                 <!-- Top Selling -->
-                
+
 
             </div>
         </div><!-- end left side columns -->
@@ -130,5 +136,3 @@
         *@
     </div>
 </section>
-
-

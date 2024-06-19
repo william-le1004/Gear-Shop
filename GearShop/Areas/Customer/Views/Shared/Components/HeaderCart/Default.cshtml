@@ -16,7 +16,9 @@
                     <h3>cart</h3>
                 </div>
                 <div class="mini_cart_close">
-                    <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
+                    <a href="javascript:void(0)">
+                        <i class="ion-android-close"></i>
+                    </a>
                 </div>
             </div>
             <div id="cartHeader">
@@ -24,14 +26,18 @@
                 {
                     <div class="cart_item">
                         <div class="cart_img">
-                            <a href="#"><img src="@item.product.ImgUrl" alt=""></a>
+                            <a href="#">
+                                <img src="@item.product.ImgUrl" alt="">
+                            </a>
                         </div>
                         <div class="cart_info">
                             <a href="#">@item.product.Name.Truncate(20)</a>
                             <p>@item.Quantity x <span> @item.product.Price.ToString("C") </span></p>
                         </div>
                         <div class="cart_remove">
-                            <a href="#"><i class="icon-close icons"></i></a>
+                            <a href="#">
+                                <i class="icon-close icons"></i>
+                            </a>
                         </div>
                     </div>
                 }
@@ -45,7 +51,7 @@
             </div> *@
                 <div class="cart_total mt-10">
                     <span>total:</span>
-                    <span class="price">@list.Sum(x=>x.Quantity * x.product.Price).ToString("C")</span>
+                    <span class="price">@list.Sum(x => x.Quantity * x.product.Price).ToString("C")</span>
                 </div>
             </div>
         </div>
@@ -68,7 +74,9 @@ else
                     <h3>Cart Empy</h3>
                 </div>
                 <div class="mini_cart_close">
-                    <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
+                    <a href="javascript:void(0)">
+                        <i class="ion-android-close"></i>
+                    </a>
                 </div>
             </div>
         </div>

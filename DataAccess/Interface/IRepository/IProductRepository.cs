@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Infrastructure.Interface.IRepository
+namespace Infrastructure.Interface.IRepository;
+
+public interface IProductRepository : IRepository<Product>
 {
-    public interface IProductRepository : IRepository<Product>
-    {
-        Task Update(Product obj);
-    }
+    Task Update(Product obj);
 }

@@ -11,16 +11,6 @@ namespace ShoppingWeb.Areas.Admin.Controllers;
 [Area("Admin")]
 public class CategoryController : BaseController
 {
-    #region Readonlys
-
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ApplicationDbContext _db;
-    private readonly IWebHostEnvironment _webHostEnvironment;
-
-    #endregion
-
-    public INotyfService _notyfService { get; }
-
     #region Constructor
 
     public CategoryController(IUnitOfWork unitOfWork,
@@ -35,6 +25,9 @@ public class CategoryController : BaseController
     }
 
     #endregion
+
+    public INotyfService _notyfService { get; }
+
     public async Task<IActionResult> Index(int? pageNumber)
     {
         var paginatedList = await _db.Categories.PaginatedListAsync(pageNumber ?? 1, 4);
@@ -45,12 +38,12 @@ public class CategoryController : BaseController
     {
         if (id == null || id == 0)
         {
-            Category c = new Category();
+            var c = new Category();
             return View(c);
         }
         else
         {
-            Category c = await _unitOfWork.Category.Get(u => u.Id == id);
+            var c = await _unitOfWork.Category.Get(u => u.Id == id);
             return View(c);
         }
     }
@@ -58,7 +51,6 @@ public class CategoryController : BaseController
     [HttpPost]
     public async Task<IActionResult> CreateAndUpdate(Category obj)
     {
-
         if (ModelState.IsValid)
         {
             //Create new
@@ -72,26 +64,31 @@ public class CategoryController : BaseController
                 _unitOfWork.Category.Update(obj);
                 _notyfService.Success("Category Updated Successfully");
             }
+
             await _unitOfWork.Save();
 
             return RedirectToAction("Index");
         }
+
         return View();
     }
+
     [HttpPost]
     public async Task<IActionResult> Delete(int? id)
     {
-        Category? category = await _unitOfWork.Category.Get(x => x.Id == id);
-        if (id == null || id == 0)
-        {
-            return NotFound();
-        }
+        var category = await _unitOfWork.Category.Get(x => x.Id == id);
+        if (id == null || id == 0) return NotFound();
         await _unitOfWork.Category.Remove(category);
         await _unitOfWork.Save();
         _notyfService.Success("Deleted!");
         return RedirectToAction("Index");
     }
 
+    #region Readonlys
 
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
+    #endregion
 }

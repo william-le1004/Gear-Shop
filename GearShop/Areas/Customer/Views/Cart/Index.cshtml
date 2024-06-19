@@ -1,7 +1,7 @@
 ﻿@model List<CartItem>
 @inject IHttpContextAccessor cont;
 @{
-    string role = cont.HttpContext.Session.GetString("Admin");
+    var role = cont.HttpContext.Session.GetString("Admin");
 }
 <div class="breadcrumbs_area">
     <div class="container">
@@ -10,9 +10,13 @@
                 <div class="breadcrumb_content text-center">
                     <h2>Cart</h2>
                     <ul class="d-flex justify-content-center">
-                        <li><a href="index.html">My Cart</a></li>
+                        <li>
+                            <a href="index.html">My Cart</a>
+                        </li>
                         <li>></li>
-                        <li><a href="single-product.html">single product</a></li>
+                        <li>
+                            <a href="single-product.html">single product</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -65,7 +69,7 @@
                                     <div class="d-flex justify-content-between p-2 mb-2" style="background-color: #e1f5fe;">
                                         <h5 class="fw-bold mb-0">Total:</h5>
                                         <h5 class="fw-bold mb-0" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">
-                                            @Model.Sum(x=>x.Quantity * x.product.Price).ToString("C")
+                                            @Model.Sum(x => x.Quantity * x.product.Price).ToString("C")
                                         </h5>
                                     </div>
                                     <div class="form-group" style="float:right">

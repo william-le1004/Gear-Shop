@@ -1,9 +1,8 @@
-namespace Domain.Entities
-{
-    public class ErrorViewModel
-    {
-        public string? RequestId { get; set; }
+namespace Domain.Entities;
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-    }
+public class ErrorViewModel
+{
+    public string? RequestId { get; set; }
+
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }

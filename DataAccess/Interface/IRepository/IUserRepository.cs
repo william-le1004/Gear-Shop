@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Infrastructure.Interface.IRepository
+namespace Infrastructure.Interface.IRepository;
+
+public interface IUserRepository : IRepository<User>
 {
-    public interface IUserRepository : IRepository<User>
-    {
-        void Update(User obj);
-    }
+    void Update(User obj);
 }

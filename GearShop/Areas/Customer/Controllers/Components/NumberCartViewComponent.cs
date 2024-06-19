@@ -1,17 +1,14 @@
-﻿using Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GearShopWeb.Areas.Customer.Controllers.Components
+namespace GearShopWeb.Areas.Customer.Controllers.Components;
+
+public class NumberCartViewComponent : ViewComponent
 {
-    public class NumberCartViewComponent : ViewComponent
+    public IViewComponentResult Invoke()
     {
-        public IViewComponentResult Invoke()
-        {
-            //var cart = HttpContext.Session.GetString("CartSession");
-            //var list = JsonConvert.DeserializeObject<List<CartItem>>(cart);
-            
-            return View();
-        }
+        //var cart = HttpContext.Session.GetString("CartSession");
+        //var list = JsonConvert.DeserializeObject<List<CartItem>>(cart);
+
+        return View();
     }
 }

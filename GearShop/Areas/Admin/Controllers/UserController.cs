@@ -6,111 +6,111 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GearShop.Areas.Admin.Controllers
+namespace GearShop.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class UserController : BaseController
 {
-    [Area("Admin")]
-    public class UserController : BaseController
+    #region Constructor
+
+    public UserController(IUnitOfWork unitOfWork,
+        IWebHostEnvironment webHostEnvironment,
+        INotyfService notyfService,
+        ApplicationDbContext db)
     {
-        #region Readonlys
+        _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
+        _notyfService = notyfService;
+        _db = db;
+    }
 
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ApplicationDbContext _db;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+    #endregion
 
-        #endregion
+    public INotyfService _notyfService { get; }
 
-        public INotyfService _notyfService { get; }
+    // GET: UserController1
+    public async Task<ActionResult> Index(int? pageNumber)
+    {
+        var users = await _db.Users.Include(x => x.Role)
+            .Where(x => x.Role.IsAdmin == false)
+            .PaginatedListAsync(pageNumber ?? 1, 4);
+        return View(users);
+    }
 
-        #region Constructor
+    // GET: UserController1/Details/5
+    public ActionResult Details(int id)
+    {
+        return View();
+    }
 
-        public UserController(IUnitOfWork unitOfWork,
-            IWebHostEnvironment webHostEnvironment,
-            INotyfService notyfService,
-            ApplicationDbContext db)
+    // GET: UserController1/Create
+    public ActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: UserController1/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Create(IFormCollection collection)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
-            _webHostEnvironment = webHostEnvironment;
-            _notyfService = notyfService;
-            _db = db;
+            return RedirectToAction(nameof(Index));
         }
-
-        #endregion
-        // GET: UserController1
-        public async Task<ActionResult> Index(int? pageNumber)
-        {
-            var users = await _db.Users.Include(x => x.Role)
-                                       .Where(x => x.Role.IsAdmin == false)
-                                       .PaginatedListAsync(pageNumber ?? 1, 4);
-            return View(users);
-        }
-
-        // GET: UserController1/Details/5
-        public ActionResult Details(int id)
+        catch
         {
             return View();
-        }
-
-        // GET: UserController1/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UserController1/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController1/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: UserController1/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController1/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UserController1/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
+
+    // GET: UserController1/Edit/5
+    public ActionResult Edit(int id)
+    {
+        return View();
+    }
+
+    // POST: UserController1/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Edit(int id, IFormCollection collection)
+    {
+        try
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View();
+        }
+    }
+
+    // GET: UserController1/Delete/5
+    public ActionResult Delete(int id)
+    {
+        return View();
+    }
+
+    // POST: UserController1/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Delete(int id, IFormCollection collection)
+    {
+        try
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View();
+        }
+    }
+
+    #region Readonlys
+
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
+    #endregion
 }

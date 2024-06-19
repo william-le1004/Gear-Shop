@@ -9,13 +9,13 @@
             <div class="col-6 text-end">
                 <a asp-controller="User" asp-action="CreateAndUpdate" class="btn btn-dark rounded-pill"
                    style="margin-top:15px">
-                    <i class="bi bi-plus-circle"></i>  Create New Product
+                    <i class="bi bi-plus-circle"></i> Create New Product
                 </a>
             </div>
         </div>
         <div class="table-responsive">
-        <table id="tblData" class="table" style="width:100%">
-            <thead>
+            <table id="tblData" class="table" style="width:100%">
+                <thead>
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">User-Name</th>
@@ -24,8 +24,8 @@
                     <th scope="col">Register Date</th>
                     <th scope="col">Role</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 @foreach (var item in Model.Items)
                 {
                     <tr>
@@ -37,8 +37,8 @@
                         <td>@item.Role.RoleName</td>
                     </tr>
                 }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

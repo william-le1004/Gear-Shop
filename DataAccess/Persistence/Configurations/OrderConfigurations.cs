@@ -2,15 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configurations
+namespace Infrastructure.Persistence.Configurations;
+
+public class OrderConfigurations : IEntityTypeConfiguration<Order>
 {
-    public class OrderConfigurations : IEntityTypeConfiguration<Order>
+    public void Configure(EntityTypeBuilder<Order> builder)
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
-        {
-
-
-
-        }
     }
 }

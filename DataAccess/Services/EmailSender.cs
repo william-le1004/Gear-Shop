@@ -1,9 +1,8 @@
-﻿using Infrastructure.Interface;
+﻿using System.Net;
+using System.Net.Mail;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Net;
-using System.Net.Mail;
 
 namespace GearShopWeb.Areas.Common;
 
@@ -20,7 +19,7 @@ public class EmailSender : IEmailSender
     private readonly ILogger _logger;
 
     public EmailSender(IOptions<AuthMessageSenderOption> optionsAccessor,
-                       ILogger<EmailSender> logger)
+        ILogger<EmailSender> logger)
     {
         Options = optionsAccessor.Value;
         _logger = logger;
@@ -44,17 +43,15 @@ public class EmailSender : IEmailSender
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(options.Email, options.Password)
         };
-        MailMessage mailMessage = new MailMessage(from: options.Email!,
-                          to: toEmail,
-                          subject,
-                          message
-                          );
+        var mailMessage = new MailMessage(options.Email!,
+            toEmail,
+            subject,
+            message
+        );
         mailMessage.IsBodyHtml = true;
         await client.SendMailAsync(mailMessage);
         _logger.LogInformation(mailMessage.DeliveryNotificationOptions == DeliveryNotificationOptions.OnSuccess
-                                   ? $"Email to {toEmail} queued successfully!"
-                                   : $"Failure Email to {toEmail}");
+            ? $"Email to {toEmail} queued successfully!"
+            : $"Failure Email to {toEmail}");
     }
 }
-
-

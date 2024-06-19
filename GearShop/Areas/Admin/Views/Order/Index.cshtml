@@ -2,8 +2,12 @@
 
 <nav class="d-flex justify-content-center">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Library</a></li>
+        <li class="breadcrumb-item">
+            <a href="index.html">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Library</a>
+        </li>
         <li class="breadcrumb-item active">Centered Position</li>
     </ol>
 </nav>
@@ -21,14 +25,14 @@
                 <a asp-controller="Category" asp-action="CreateAndUpdate"
                    class="btn btn-dark rounded-pill"
                    style="margin-top:15px">
-                    <i class="bi bi-plus-circle"></i>  Create New Category
+                    <i class="bi bi-plus-circle"></i> Create New Category
                 </a>
             </div>
 
         </div>
         <div class="table-responsive">
-        <table id="tblData" class="table table-hover" style="width:100%">
-            <thead>
+            <table id="tblData" class="table table-hover" style="width:100%">
+                <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th class="w-10">Receiver</th>
@@ -38,10 +42,10 @@
                     <th class="w-10">Date</th>
                     <th class="w-10">Amount Product</th>
                     <th class="w-10">Amount Product</th>
-                    <th class="w-15">Edit   |   Delete</th>
+                    <th class="w-15">Edit | Delete</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 @foreach (var item in Model.Items)
                 {
                     <tr>
@@ -54,7 +58,7 @@
                         <td>@item.ShipAddress</td>
                         <td>@item.CreateDate</td>
                         <td>@item.OrderDetails.Count()</td>
-                        <td>@item.OrderDetails.Sum(x=>x.TotalPrice).ToString("C")</td>
+                        <td>@item.OrderDetails.Sum(x => x.TotalPrice).ToString("C")</td>
                         <td style="width:15%;">
                             <div style="display:flex;justify-content:space-evenly">
                                 <a asp-action="CreateAndUpdate" asp-route-id="@item.Id" class="btn btn-success btn-sm">
@@ -67,19 +71,17 @@
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
-        <p>Page @Model.PageIndex / @Model.TotalPages</p>
-        <ul class="pagination" id="pagination"></ul>
+                </tbody>
+            </table>
+            <p>Page @Model.PageIndex / @Model.TotalPages</p>
+            <ul class="pagination" id="pagination"></ul>
         </div>
         <form hidden id="page-delete" method="post" asp-action="Delete">
-            <input id="current-id" name="id" />
+            <input id="current-id" name="id"/>
         </form>
     </div>
 </div>
 
 @section Scripts{
-    <partial name="_CustomPaging" />
+    <partial name="_CustomPaging"/>
 }
-
-

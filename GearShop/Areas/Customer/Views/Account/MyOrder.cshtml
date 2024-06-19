@@ -6,9 +6,13 @@
                 <div class="breadcrumb_content text-center">
                     <h2>Order</h2>
                     <ul class="d-flex justify-content-center">
-                        <li><a href="index.html">Home</a></li>
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
                         <li>></li>
-                        <li><a href="blog.html">Blog</a></li>
+                        <li>
+                            <a href="blog.html">Blog</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -27,23 +31,22 @@
                 {
                     <table id="tblData" class="table" style="width:100%">
                         <thead>
-                            <tr>
-                                <th scope="col">Order Number</th>
-                                <th scope="col">Recipient</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Date</th>
-                                <th scope="col"></th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Order Number</th>
+                            <th scope="col">Recipient</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Date</th>
+                            <th scope="col"></th>
+                        </tr>
                         </thead>
                         <tbody id="order-table">
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-center" id="pagination"></ul>
                     <form hidden id="page-form">
-                        <input id="page-index" name="pageNumber" />
+                        <input id="page-index" name="pageNumber"/>
                     </form>
-
                 }
                 else
                 {
@@ -66,13 +69,13 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" style="width:100%">
                         <thead>
-                            <tr>
-                                <th scope="col">Image</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Unit Price</th>
-                                <th scope="col">Total Price</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Unit Price</th>
+                            <th scope="col">Total Price</th>
+                        </tr>
                         </thead>
                         <tbody id="orderDetail-table">
                         </tbody>
@@ -126,6 +129,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts{
     <script>
         var pageNumber = 1;

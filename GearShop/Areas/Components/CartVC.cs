@@ -8,6 +8,7 @@ public class CartVC : Controller
     {
         return ViewComponent("HeaderCart");
     }
+
     public IActionResult NumberCart()
     {
         return ViewComponent("NumberCart");

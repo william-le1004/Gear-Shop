@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Infrastructure.Interface.IRepository
+namespace Infrastructure.Interface.IRepository;
+
+public interface IOrderRepository : IRepository<Order>
 {
-    public interface IOrderRepository : IRepository<Order>
-    {
-        void Update(Order obj);
-    }
+    void Update(Order obj);
 }

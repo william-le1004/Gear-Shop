@@ -1,11 +1,10 @@
-﻿namespace Infrastructure.Interface.IRepository
+﻿namespace Infrastructure.Interface.IRepository;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        ICategoryRepository Category { get; }
-        IProductRepository Product { get; }
-        IUserRepository User { get; }
-        IOrderRepository Order { get; }
-        Task Save();
-    }
+    ICategoryRepository Category { get; }
+    IProductRepository Product { get; }
+    IUserRepository User { get; }
+    IOrderRepository Order { get; }
+    Task Save();
 }

@@ -7,9 +7,13 @@
                 <div class="breadcrumb_content text-center">
                     <h2>Shop</h2>
                     <ul class="d-flex justify-content-center">
-                        <li><a href="index.html">Home</a></li>
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
                         <li>></li>
-                        <li><a href="shop-left-sidebar.html">shop Left Sidebar</a></li>
+                        <li>
+                            <a href="shop-left-sidebar.html">shop Left Sidebar</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -30,12 +34,24 @@
                             </div>
                             <div class="widget_categories">
                                 <ul>
-                                    <li><a href="#">Lighting(12)</a></li>
-                                    <li><a href="#">Desk(2)</a></li>
-                                    <li><a href="#">Bedroom(26)</a></li>
-                                    <li><a href="#">Chair(11)</a></li>
-                                    <li><a href="#">Accessories(13)</a></li>
-                                    <li><a href="#">Furniture(23)</a></li>
+                                    <li>
+                                        <a href="#">Lighting(12)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Desk(2)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Bedroom(26)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Chair(11)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Accessories(13)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Furniture(23)</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -57,13 +73,27 @@
                             </div>
                             <div class="widget_color">
                                 <ul>
-                                    <li><a class="color1" href="javascript:void(0)"></a></li>
-                                    <li><a class="color2" href="javascript:void(0)"></a></li>
-                                    <li><a class="color3" href="javascript:void(0)"></a></li>
-                                    <li><a class="color4" href="javascript:void(0)"></a></li>
-                                    <li><a class="color5" href="javascript:void(0)"></a></li>
-                                    <li><a class="color6" href="javascript:void(0)"></a></li>
-                                    <li><a class="color7" href="javascript:void(0)"></a></li>
+                                    <li>
+                                        <a class="color1" href="javascript:void(0)"></a>
+                                    </li>
+                                    <li>
+                                        <a class="color2" href="javascript:void(0)"></a>
+                                    </li>
+                                    <li>
+                                        <a class="color3" href="javascript:void(0)"></a>
+                                    </li>
+                                    <li>
+                                        <a class="color4" href="javascript:void(0)"></a>
+                                    </li>
+                                    <li>
+                                        <a class="color5" href="javascript:void(0)"></a>
+                                    </li>
+                                    <li>
+                                        <a class="color6" href="javascript:void(0)"></a>
+                                    </li>
+                                    <li>
+                                        <a class="color7" href="javascript:void(0)"></a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="widget_color_btn">
@@ -76,12 +106,24 @@
                             </div>
                             <div class="widget_tags">
                                 <ul>
-                                    <li><a href="#">FURNITURE</a></li>
-                                    <li><a href="#">DECOR</a></li>
-                                    <li><a href="#">INTERIOR</a></li>
-                                    <li><a href="#">Bed room</a></li>
-                                    <li><a href="#">Plants</a></li>
-                                    <li><a href="#">bath room</a></li>
+                                    <li>
+                                        <a href="#">FURNITURE</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">DECOR</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">INTERIOR</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Bed room</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Plants</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">bath room</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -92,7 +134,7 @@
                     <div class="shop_right_sidaber">
                         <div class="shop_top_bar d-flex justify-content-between">
                             <div class="shop_product_count">
-                                <span>Show 9 / 12  / 18 / 24</span>
+                                <span>Show 9 / 12 / 18 / 24</span>
                             </div>
                             <div class="shop_top_right d-flex">
                                 <div class="product_sorting">
@@ -115,40 +157,57 @@
                         </div>
                         <div class="shop_gallery">
                             <div class="row">
-                                @foreach(var item in Model)
+                                @foreach (var item in Model)
                                 {
-                                <div class="col-lg-4 col-md-4 col-sm-6">
-                                    <article class="single_product">
-                                        <figure>
-                                            <div class="product_thumb">
-                                                <a href="single-product.html">
-                                                    <img src="@item.ImgUrl" alt=""></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">Sale</span>
+                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                        <article class="single_product">
+                                            <figure>
+                                                <div class="product_thumb">
+                                                    <a href="single-product.html">
+                                                        <img src="@item.ImgUrl" alt="">
+                                                    </a>
+                                                    <div class="label_product">
+                                                        <span class="label_sale">Sale</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <figcaption class="product_content">
-                                                <h4><a href="single-product.html">@item.Name</a></h4>
-                                                <div class="price_box">
+                                                <figcaption class="product_content">
+                                                    <h4>
+                                                        <a href="single-product.html">@item.Name</a>
+                                                    </h4>
+                                                    <div class="price_box">
                                                         <span class="old_price">@item.Price.ToString("c")</span>
                                                         <span class="current_price">@item.Price.ToString("c")</span>
-                                                </div>
-                                            </figcaption>
-                                        </figure>
-                                    </article>
-                                </div>
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                        </article>
+                                    </div>
                                 }
-                                
+
                             </div>
                         </div>
                         <div class="loding_bar">
                             <ul class="d-flex justify-content-center">
-                                <li><a href="#">01</a></li>
-                                <li><a href="#">02</a></li>
-                                <li><a href="#">03</a></li>
-                                <li><a href="#">04</a></li>
-                                <li><a href="#">...</a></li>
-                                <li><a href="#"><i class="ion-ios-arrow-right"></i></a></li>
+                                <li>
+                                    <a href="#">01</a>
+                                </li>
+                                <li>
+                                    <a href="#">02</a>
+                                </li>
+                                <li>
+                                    <a href="#">03</a>
+                                </li>
+                                <li>
+                                    <a href="#">04</a>
+                                </li>
+                                <li>
+                                    <a href="#">...</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="ion-ios-arrow-right"></i>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

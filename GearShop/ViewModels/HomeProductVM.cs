@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace GearShopWeb.ViewModels;
+﻿namespace GearShopWeb.ViewModels;
 
 public class HomeProductVM
 {

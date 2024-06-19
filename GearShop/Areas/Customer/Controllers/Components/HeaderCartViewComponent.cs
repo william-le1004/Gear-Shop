@@ -1,14 +1,11 @@
-﻿using Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GearShopWeb.Areas.Customer.Controllers.Components
+namespace GearShopWeb.Areas.Customer.Controllers.Components;
+
+public class HeaderCartViewComponent : ViewComponent
 {
-    public class HeaderCartViewComponent : ViewComponent
+    public IViewComponentResult Invoke()
     {
-        public IViewComponentResult Invoke()
-        {
-            return View();
-        }
+        return View();
     }
 }

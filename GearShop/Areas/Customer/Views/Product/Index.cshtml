@@ -6,9 +6,13 @@
                 <div class="breadcrumb_content text-center">
                     <h2>Shop</h2>
                     <ul class="d-flex justify-content-center">
-                        <li><a href="index.html">Home</a></li>
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
                         <li>></li>
-                        <li><a href="shop-left-sidebar.html">Product</a></li>
+                        <li>
+                            <a href="shop-left-sidebar.html">Product</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -90,7 +94,7 @@
 </div>
 
 @section Scripts{
-    <partial name="_CustomPaging" />
+    <partial name="_CustomPaging"/>
     <script>
         var filter = document.getElementById("filter");
         var currentFilter = "@ViewBag.CurrentFilter";
